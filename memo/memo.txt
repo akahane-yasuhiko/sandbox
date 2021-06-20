@@ -1,0 +1,20 @@
+■ポート443でSSH接続したい場合
+・EC2 AmazonLinuxのインスタンス起動時にSSHポートを443にする
+「ステップ 3: インスタンスの詳細の設定」>「高度な詳細」>「ユーザーデータ」で「テキストで」を選択して以下を貼り付け
+#!/bin/sh -ex
+/bin/sed -i -e 's/^#Port 22$/Port 443/' /etc/ssh/sshd_config
+service sshd restart
+
+
+■リモートデスクトップ使いたい場合
+・MATEとTigerVNCをインストールしてサービスとして登録する
+https://aws.amazon.com/jp/premiumsupport/knowledge-center/ec2-linux-2-install-gui/
+
+443でRDP接続したい場合
+・SSHポートフォワーディングでRDPを通す
+teratermの「設定」>「SSH転送」で「追加」ボタン
+　ローカルのポート：13389(適当)
+　リモート側ホスト：自端末のIPアドレス
+　ポート：3389
+⇒自端末のIPアドレス:13389からlocalhost:3389に転送
+　（localhostからlocalhostにするとエラーになる）
