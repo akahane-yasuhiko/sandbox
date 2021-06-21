@@ -1,3 +1,8 @@
+■プロキシ設定
+set HTTP_PROXY=http://username:password@proxyhost:port
+set HTTPS_PROXY=http://username:password@proxyhost:port
+URLエンコーディングが必要
+
 ■ポート443でSSH接続したい場合
 ・EC2 AmazonLinuxのインスタンス起動時にSSHポートを443にする
 「ステップ 3: インスタンスの詳細の設定」>「高度な詳細」>「ユーザーデータ」で「テキストで」を選択して以下を貼り付け
