@@ -3,8 +3,9 @@ set HTTP_PROXY=http://username:password@proxyhost:port
 set HTTPS_PROXY=http://username:password@proxyhost:port
 URLエンコーディングが必要
 
-■ポート443でSSH接続したい場合
-・EC2 AmazonLinuxのインスタンス起動時にSSHポートを443にする
+■ポート22や3389が使えない環境でSSH、RDPを使う
+・SSHをポート443にする
+EC2 AmazonLinuxのインスタンス起動時にSSHポートを443にする
 「ステップ 3: インスタンスの詳細の設定」>「高度な詳細」>「ユーザーデータ」で「テキストで」を選択して以下を貼り付け
 ---------------------------------------------------------------
 #!/bin/sh -ex
@@ -12,20 +13,22 @@ URLエンコーディングが必要
 service sshd restart
 ---------------------------------------------------------------
 
-■リモートデスクトップ使いたい場合
-・MATEとTigerVNCをインストールしてサービスとして登録する
-https://aws.amazon.com/jp/premiumsupport/knowledge-center/ec2-linux-2-install-gui/
-
-443でRDP接続したい場合
-・SSHポートフォワーディングでRDPを通す
+・teratermでSSHポート転送
 teratermの「設定」>「SSH転送」で「追加」ボタン
 　ローカルのポート：13389(適当)
-　リモート側ホスト：自端末のIPアドレス
+　リモート側ホスト：SSH接続先から見てつなぎたい先のIPアドレス※
 　ポート：3389
-⇒自端末のIPアドレス:13389からlocalhost:3389に転送
-　（localhostからlocalhostにするとエラーになる）
-参考
-https://www.j-oosk.com/teraterm/port-forward/554/
+    参考
+    https://www.j-oosk.com/teraterm/port-forward/554/
+
+  ※SSHの接続先がRDPもリッスンしているなら
+    リモート側ホストを空にして以下の設定でつながる。（IPアドレスが変わっても設定不変なので便利）
+    「ローカルの"localhost"のポート13389からリモート側ホスト"localhost"のポート3389」
+
+・AmazonLinuxマシンでRDPを使う
+MATEとTigerVNCをインストールしてサービスとして登録する
+https://aws.amazon.com/jp/premiumsupport/knowledge-center/ec2-linux-2-install-gui/
+
 
 
 ■sshのパスフレーズを聞かれないようにする
